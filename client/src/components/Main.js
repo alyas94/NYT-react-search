@@ -5,27 +5,25 @@ import Results from "./Results";
 import API from "../utils/api";
 
 class Main extends Component {
-
   state = {
     topic: "",
     startYear: "",
     endYear: "",
     articles: [],
-    saved: []
+    saved: [],
   };
 
   // When the component mounts, get a list of all saved articles and update this.state.saved
   componentDidMount() {
-    this.getSavedArticles()
+    this.getSavedArticles();
   }
 
   // Method for getting saved articles (all articles) from the db
   getSavedArticles = () => {
-    API.getArticle()
-      .then((res) => {
-        this.setState({ saved: res.data });
-      });
-  }
+    API.getArticle().then(res => {
+      this.setState({ saved: res.data });
+    });
+  };
 
   // A helper method for rendering one search results div for each article
   renderArticles = () => {
@@ -40,7 +38,7 @@ class Main extends Component {
         getSavedArticles={this.getSavedArticles}
       />
     ));
-  }
+  };
 
   // A helper method for rendering one div for each saved article
   renderSaved = () => {
@@ -55,61 +53,66 @@ class Main extends Component {
         getSavedArticles={this.getSavedArticles}
       />
     ));
-  }
+  };
 
   // Keep track of what user types into topic input so that input can be grabbed later
-  handleTopicChange = (event) => {
+  handleTopicChange = event => {
     this.setState({ topic: event.target.value });
-  }
+  };
 
   // Keep track of what user types into topic input so that input can be grabbed later
-  handleStartYearChange = (event) => {
+  handleStartYearChange = event => {
     this.setState({ startYear: event.target.value });
-  }
+  };
 
   // Keep track of what user types into topic input so that input can be grabbed later
-  handleEndYearChange = (event) => {
+  handleEndYearChange = event => {
     this.setState({ endYear: event.target.value });
-  }
+  };
 
   // When the search form submits, perform NYT api search with user input
-  handleFormSubmit = (event) => {
+  handleFormSubmit = event => {
     event.preventDefault();
     console.log("Getting NYT Articles");
     console.log("this.state.topic: ", this.state.topic);
     console.log("this.state.startYear: ", this.state.startYear);
     console.log("this.state.endYear: ", this.state.endYear);
-    API.searchNYT(this.state.topic, this.state.startYear, this.state.endYear)
-      .then((res) => {
-        this.setState({ articles: res.data.response.docs });
-        console.log("this.state.articles: ", this.state.articles);
-      });
-  }
+    API.searchNYT(
+      this.state.topic,
+      this.state.startYear,
+      this.state.endYear
+    ).then(res => {
+      this.setState({ articles: res.data.response.docs });
+      console.log("this.state.articles: ", this.state.articles);
+    });
+  };
 
   // When save article button is clicked, add article to db
-  handleSaveButton = (id) => {
-    const findArticleByID = this.state.articles.find((el) => el._id === id);
+  handleSaveButton = id => {
+    const findArticleByID = this.state.articles.find(el => el._id === id);
     console.log("findArticleByID: ", findArticleByID);
-    const newSave = {title: findArticleByID.headline.main, date: findArticleByID.pub_date, url: findArticleByID.web_url};
-    API.saveArticle(newSave)
-    .then(this.getSavedArticles());
-  }
+    const newSave = {
+      title: findArticleByID.headline.main,
+      date: findArticleByID.pub_date,
+      url: findArticleByID.web_url,
+    };
+    API.saveArticle(newSave).then(this.getSavedArticles());
+  };
 
   // When delete article button is clicked, remove article from db
-  handleDeleteButton = (id) => {
-    API.deleteArticle(id)
-      .then(this.getSavedArticles());
-  }
+  handleDeleteButton = id => {
+    API.deleteArticle(id).then(this.getSavedArticles());
+  };
 
   render() {
     return (
-
       <div className="main-container">
         <div className="container">
           {/* Jumbotron */}
           <div className="jumbotron">
-            <h1 className="text-center"><strong>New York Times Article Search</strong></h1>
-            <h2 className="text-center">Search for and save articles of interest.</h2>
+            <h1 className="text-center">
+              <strong>New York Times Search</strong>
+            </h1>
           </div>
           {/* Search Form and Results Section */}
           <Search
@@ -126,32 +129,20 @@ class Main extends Component {
                 <div className="panel panel-primary">
                   <div className="panel-heading">
                     <h3 className="panel-title">
-                      <strong>
-                        <i className="fa fa-download" aria-hidden="true"></i> Saved Articles</strong>
+                      <strong> Saved Articles</strong>
                     </h3>
                   </div>
                   <div className="panel-body">
-                    <ul className="list-group">
-                      {this.renderSaved()}
-                    </ul>
+                    <ul className="list-group">{this.renderSaved()}</ul>
                   </div>
                 </div>
               </div>
             </div>
           </div>
-          <footer>
-            <hr />
-            <p className="pull-right">
-              <i className="fa fa-github" aria-hidden="true"></i>
-              Proudly built using React.js
-            </p>
-          </footer>
         </div>
       </div>
-
     );
   }
-
 }
 
 export default Main;
