@@ -11,7 +11,7 @@ This New York Times Scraper Is a MERN app that scrapes articles and allows you t
 ## Built With
 
 - [node.js](https://nodejs.org/en/)
-- [mongoDB](https://www.mongodb.com/) - Promise based ORM for node.js
+- [mongoDB](https://www.mongodb.com/)
 - [mongoose](http://mongoosejs.com/)
-- [react](https://reactjs.org/) - api for recording videos
-- [bootstrap](https://getbootstrap.com/) - css framework
+- [react](https://reactjs.org/)
+- [bootstrap](https://getbootstrap.com/)
