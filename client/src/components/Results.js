@@ -1,5 +1,11 @@
 import React from "react";
 
+//renders date into readable format for users
+const dateRender = function(date) {
+  let newDate = date.slice(0, 10);
+  return newDate;
+};
+
 const Results = props => (
   <div className="container">
     <li className="list-group-item">
@@ -21,7 +27,7 @@ const Results = props => (
           </button>
         </span>
       </h4>
-      <p>Date Published: {props.date}</p>
+      <p>Published: {dateRender(props.date)}</p>
     </li>
   </div>
 );
